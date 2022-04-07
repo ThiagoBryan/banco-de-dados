@@ -1,0 +1,142 @@
+/* insert */
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Nome','Endereço', 123, 111, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'João','Rua da alfandega', 1, 100000, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Marcos','Rua do comércio', 13, 1000, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Pedro','Rua da boa viagem', 1, 100000, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Vinicius','Rua da fazendinha', 12, 1000, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Charlles','Rua do programador', 100, 10, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Gabriel','Avenida paraguai', 100, 1087, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Débora','Rua da esperança', 100, 1087, 100);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Débora','Rua da esperança', 100, 1087, NULL);
+
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Alterdata','Rua do emprego', 100, 1000000, 100);
+
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Cliente','Rua da boa viagem', 1, 100000, 101);
+
+insert into public.cliente (nome, endereco, fat_acumulado, limite_credito, codigo_vendedor) values (
+'Outro cliente','Rua da boa viagem', 1, 100000, 101);
+
+insert into public.vendedor(nome, endereco, comissao) values ('Flávia Vendedora', 'Rua dos navios', 1000);
+
+insert into public.vendedor(nome, endereco, comissao) values ('Roberta Vendedora', 'Rua dos jet-skis', 1500);
+
+insert into public.vendedor(nome, endereco, comissao) values ('Rosana Vendedora', 'Rua dos pedestres', 2000);
+
+insert into public.vendedor(nome, endereco, comissao) values ('Joana Vendedora', 'Rua dos banhistas', 2000);
+
+
+/* select */
+
+select * from public.cliente;
+
+select * from public.vendedor;
+
+select * from public.cliente order by nome;
+
+select * from public.cliente order by nome asc;
+
+select * from public.cliente order by nome desc;
+
+select nome from public.cliente order by nome;
+
+select nome,limite_credito from public.cliente;
+
+
+/* delete */
+
+delete from public.cliente where nome='João';
+
+delete from public.cliente where codigo_cliente=2;
+
+delete from public.cliente where nome='João' and limite_credito=1000;
+
+delete from public.cliente where codigo_cliente=5;
+
+
+/* update */
+
+update public.cliente set limite_credito=(limite_credito * 2);
+
+update public.cliente set nome='João' where nome='Marcos';
+
+update public.cliente set limite_credito=5000;
+
+
+/* where */
+
+select * from public.cliente where cliente.nome like '%a%';
+
+select * from public.cliente where length(cliente.nome)>6;
+
+select cliente.nome, cliente.endereco from public.cliente where cliente.limite_credito<2000;
+
+select cliente.nome, cliente.endereco, vendedor.nome from public.cliente, public.vendedor 
+	where cliente.limite_credito>2000 and vendedor.codigo_vendedor=100;
+
+select cliente.nome, cliente.endereco, vendedor.nome from public.cliente, public.vendedor 
+	where cliente.limite_credito>2000 or vendedor.codigo_vendedor=100;
+
+
+/* inner-join, outer-join, left-join, full outer-join */
+
+select * from public.cliente inner join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor;
+
+select * from public.cliente left join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor;
+
+select * from public.cliente right join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor;
+
+select * from public.cliente full join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor ;
+
+
+select cliente.nome, cliente.limite_credito, vendedor.codigo_vendedor, vendedor.nome from public.cliente
+	inner join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor;
+
+select cliente.nome, cliente.limite_credito, vendedor.codigo_vendedor, vendedor.nome from public.cliente
+	left join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor;
+
+select cliente.nome, cliente.limite_credito, vendedor.codigo_vendedor, vendedor.nome from public.cliente
+	right join public.vendedor on cliente.codigo_vendedor = vendedor.codigo_vendedor order by cliente.nome;
+
+select c.nome, c.limite_credito, v.codigo_vendedor, v.nome from public.cliente c
+	full join public.vendedor v on c.codigo_vendedor = v.codigo_vendedor order by c.nome;
+
+
+/* cross join - Extra ->Não cairá na prova<- */
+
+select * from public.cliente cross join public.vendedor;
+
+
+/* begin - Extra ->Não cairá na prova<-*/
+begin transaction;
+update public.cliente set limite_credito=5000;
+
+begin transaction;
+update public.cliente set limite_credito=1000000;
+
+rollback;
+
+commit;
+/*  */
+
